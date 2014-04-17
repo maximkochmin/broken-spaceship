@@ -6,7 +6,28 @@ var Main = function() {
         Main.HEIGHT,
         this.gameContainer
     );
+    this.loadAssets();
+};
 
+
+Main.WIDTH = 1280;
+
+
+Main.HEIGHT = 960;
+
+
+Main.prototype.loadAssets = function() {
+    var assetsToLoad = [
+        "resources/space_background.png",
+        "resources/space_ship_sprite.json"
+    ];
+    var loader = new PIXI.AssetLoader(assetsToLoad);
+    loader.onComplete = this.onAssetsLoaded.bind(this);
+    loader.load();
+};
+
+
+Main.prototype.onAssetsLoaded = function() {
     this.background = new Background(Main.WIDTH, Main.HEIGHT);
     this.stage.addChild(this.background);
 
@@ -26,12 +47,6 @@ var Main = function() {
 
     this.update();
 };
-
-
-Main.WIDTH = 1280;
-
-
-Main.HEIGHT = 960;
 
 
 Main.prototype.update = function() {

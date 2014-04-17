@@ -1,11 +1,27 @@
 var Ship = function(x, y) {
-    var texture = PIXI.Texture.fromImage("resources/space_ship.png");
-    PIXI.Sprite.call(this, texture, 640, 480);
+    var textures = [
+        new PIXI.Texture.fromFrame("space_ship_2.png"),
+        new PIXI.Texture.fromFrame("space_ship_3.png"),
+        new PIXI.Texture.fromFrame("space_ship_4.png"),
+        new PIXI.Texture.fromFrame("space_ship_5.png"),
+        new PIXI.Texture.fromFrame("space_ship_6.png"),
+        new PIXI.Texture.fromFrame("space_ship_7.png"),
+        new PIXI.Texture.fromFrame("space_ship_6.png"),
+        new PIXI.Texture.fromFrame("space_ship_5.png"),
+        new PIXI.Texture.fromFrame("space_ship_4.png"),
+        new PIXI.Texture.fromFrame("space_ship_3.png"),
+        new PIXI.Texture.fromFrame("space_ship_2.png")
+    ];
+
+    PIXI.MovieClip.call(this, textures);
 
     this.anchor.x = 0.5;
-    this.anchor.y = 0.5;
+    this.anchor.y = 0.25;
     this.position.x = x;
     this.position.y = y;
+    this.animationSpeed = 0.6;
+    this.loop = false;
+
 
     this.physicsAttrs = {
         shouldAccelerate: false,
@@ -26,7 +42,7 @@ Ship.ROTATION_SPEED = Math.PI / 90;
 Ship.FRICTION = 0.99;
 
 
-Ship.prototype = Object.create(PIXI.Sprite.prototype);
+Ship.prototype = Object.create(PIXI.MovieClip.prototype);
 
 
 Ship.prototype.setAngle = function(angle) {
@@ -54,6 +70,7 @@ Ship.prototype.update = function() {
     this.rotation += this.physicsAttrs.rotationSign * Ship.ROTATION_SPEED;
 
     if (this.physicsAttrs.shouldAccelerate) {
+        this.gotoAndPlay(0);
         this.physicsAttrs.shouldAccelerate = false;
         this.physicsAttrs.velocity.x += -Ship.ACCELERATION * Math.sin(this.rotation);
         this.physicsAttrs.velocity.y +=  Ship.ACCELERATION * Math.cos(this.rotation);
