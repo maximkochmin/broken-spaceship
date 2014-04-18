@@ -31,14 +31,8 @@ Main.prototype.onAssetsLoaded = function() {
     this.background = new Background(Main.WIDTH, Main.HEIGHT);
     this.stage.addChild(this.background);
 
-    this.text = new PIXI.Text('КЛИКАЙ ЧТОБЫ УСКОРИТЬСЯ!', {
-        font: '30px PT Mono',
-        fill: 'rgba(255, 255, 255, 0.5)'
-    });
-    this.text.anchor.x = 0.5;
-    this.text.position.x = Main.WIDTH / 2;
-    this.text.position.y = 60;
-    this.stage.addChild(this.text);
+    this.scoreDisplay = new ScoreDisplay(Main.WIDTH - 10, 10);
+    this.stage.addChild(this.scoreDisplay);
 
     this.ship = new Ship(Main.WIDTH / 2, Main.HEIGHT / 2);
     this.stage.addChild(this.ship);
@@ -49,9 +43,17 @@ Main.prototype.onAssetsLoaded = function() {
 };
 
 
+Main.prototype.reset = function() {
+    this.scoreDisplay.setScore(0);
+    this.ship.reset();
+    this.background.reset();
+};
+
+
 Main.prototype.update = function() {
     var p = this.ship.update();
-    this.background.setViewportPosition(p);
+    this.scoreDisplay.setScore(parseInt(p.y / 100, 10));
+    this.background.setViewportPosition(p.x, p.y);
     this.renderer.render(this.stage);
     requestAnimFrame(this.update.bind(this));
 };

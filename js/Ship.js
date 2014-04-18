@@ -21,14 +21,7 @@ var Ship = function(x, y) {
     this.position.y = y;
     this.animationSpeed = 0.6;
     this.loop = false;
-
-
-    this.physicsAttrs = {
-        shouldAccelerate: false,
-        position: new PIXI.Point(0, 0),
-        velocity: new PIXI.Point(0, 0),
-        rotationSign: 1
-    };
+    this.reset();
 
 };
 
@@ -42,7 +35,21 @@ Ship.ROTATION_SPEED = Math.PI / 90;
 Ship.FRICTION = 0.99;
 
 
+Ship.EPSILON = 1e-1;
+
+
 Ship.prototype = Object.create(PIXI.MovieClip.prototype);
+
+
+Ship.prototype.reset = function() {
+    this.physicsAttrs = {
+        shouldAccelerate: false,
+        position: {x: 0, y: 0},
+        velocity: {x: 0, y: 0},
+        rotationSign: 1
+    };
+    this.rotation = 0;
+};
 
 
 Ship.prototype.setAngle = function(angle) {
@@ -79,8 +86,13 @@ Ship.prototype.update = function() {
     this.physicsAttrs.position.x += this.physicsAttrs.velocity.x;
     this.physicsAttrs.position.y += this.physicsAttrs.velocity.y;
 
-    this.physicsAttrs.velocity.x = Ship.FRICTION * this.physicsAttrs.velocity.x;
-    this.physicsAttrs.velocity.y = Ship.FRICTION * this.physicsAttrs.velocity.y;
+    if (Math.abs(this.physicsAttrs.velocity.x) > Ship.EPSILON) {
+        this.physicsAttrs.velocity.x = Ship.FRICTION * this.physicsAttrs.velocity.x;
+    }
+
+    if (Math.abs(this.physicsAttrs.velocity.y) > Ship.EPSILON) {
+        this.physicsAttrs.velocity.y = Ship.FRICTION * this.physicsAttrs.velocity.y;
+    }
 
     return this.physicsAttrs.position;
 };
