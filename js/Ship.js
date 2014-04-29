@@ -15,6 +15,8 @@ var Ship = function(x, y) {
 
     PIXI.MovieClip.call(this, textures);
 
+    this.middlePositionX = x;
+
     this.anchor.x = 0.5;
     this.anchor.y = 0.25;
     this.position.x = x;
@@ -29,7 +31,7 @@ var Ship = function(x, y) {
 Ship.ACCELERATION = 10;
 
 
-Ship.ROTATION_SPEED = Math.PI / 90;
+Ship.ROTATION_SPEED = Math.PI / 45;
 
 
 Ship.FRICTION = 0.99;
@@ -44,10 +46,11 @@ Ship.prototype = Object.create(PIXI.MovieClip.prototype);
 Ship.prototype.reset = function() {
     this.physicsAttrs = {
         shouldAccelerate: false,
-        position: {x: 0, y: 0},
+        position: {x: this.middlePositionX, y: 0},
         velocity: {x: 0, y: 0},
         rotationSign: 1
     };
+    this.position.x = this.middlePositionX;
     this.rotation = 0;
 };
 
@@ -79,12 +82,14 @@ Ship.prototype.update = function() {
     if (this.physicsAttrs.shouldAccelerate) {
         this.gotoAndPlay(0);
         this.physicsAttrs.shouldAccelerate = false;
-        this.physicsAttrs.velocity.x += -Ship.ACCELERATION * Math.sin(this.rotation);
-        this.physicsAttrs.velocity.y +=  Ship.ACCELERATION * Math.cos(this.rotation);
+        this.physicsAttrs.velocity.x += Ship.ACCELERATION * Math.sin(this.rotation);
+        this.physicsAttrs.velocity.y += Ship.ACCELERATION * Math.cos(this.rotation);
     }
 
     this.physicsAttrs.position.x += this.physicsAttrs.velocity.x;
     this.physicsAttrs.position.y += this.physicsAttrs.velocity.y;
+
+    this.position.x = this.physicsAttrs.position.x;
 
     if (Math.abs(this.physicsAttrs.velocity.x) > Ship.EPSILON) {
         this.physicsAttrs.velocity.x = Ship.FRICTION * this.physicsAttrs.velocity.x;
