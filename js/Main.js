@@ -7,6 +7,11 @@ var Main = function() {
         this.gameContainer
     );
 
+    this.lastRank = Main.SCORES_HISTORY_LENGTH + 1;
+
+    this.highScores = window.localStorage.getItem(Main.HIGH_SCORES_STORAGE_KEY);
+    this.highScores = this.highScores === null ? [] : this.highScores.split(',');
+
     this.currentScreen = undefined;
     this.screens = {};
 
@@ -20,6 +25,26 @@ Main.WIDTH = 640;
 
 
 Main.HEIGHT = 960;
+
+
+Main.SCORES_HISTORY_LENGTH = 10;
+
+
+Main.HIGH_SCORES_STORAGE_KEY = 'high_scores';
+
+
+Main.prototype.saveScore = function(score) {
+    var i = 0;
+    for (; i < this.highScores.length; i++) {
+        if (this.highScores[i] < score) {
+            break;
+        }
+    }
+    this.lastRank = i;
+    this.highScores.splice(i, 0, score);
+    this.highScores.splice(Main.SCORES_HISTORY_LENGTH);
+    window.localStorage.setItem(Main.HIGH_SCORES_STORAGE_KEY, this.highScores);
+};
 
 
 Main.prototype.getCurrentScreen = function() {
@@ -37,10 +62,11 @@ Main.prototype.showLoadingScreen = function() {
 
 Main.prototype.showStartScreen = function() {
     if (!('start' in this.screens)) {
-        this.screens.start = new StartScreen(Main.WIDTH, Main.HEIGHT, 'Broken spaceship', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, porro, sapiente, reprehenderit, nostrum expedita nemo recusandae fuga consectetur vero deserunt delectus autem mollitia. Perspiciatis, nostrum reiciendis quaerat unde odit aliquid.');
+        this.screens.start = new StartScreen(Main.WIDTH, Main.HEIGHT, 'Broken spaceship');
     }
+    this.screens.start.setHighScores(this.highScores, this.lastRank);
     this.showScreen('start');
-    document.body.onclick = this.startGame.bind(this);
+    document.body.onmousedown = this.startGame.bind(this);
 };
 
 
@@ -50,12 +76,12 @@ Main.prototype.startGame = function() {
     }
     this.showScreen('game');
     this.screens.game.reset();
-    document.body.onclick = this.screens.game.accelerate.bind(this.screens.game);
+    document.body.onmousedown = this.screens.game.accelerate.bind(this.screens.game);
 };
 
 
 Main.prototype.showScreen = function(name) {
-    document.body.onclick = null;
+    document.body.onmousedown = null;
     if (!(name in this.screens)) {
         throw new RangeError('Screen "' + name + '" does not exist');
     }
@@ -82,6 +108,33 @@ Main.prototype.loadAssets = function() {
 
 
 Main.prototype.onAssetsLoaded = function() {
+    this.loadFonts();
+};
+
+
+Main.prototype.loadFonts = function() {
+
+    WebFontConfig = {
+        google: {
+            families: ['Source Code Pro:900']
+        },
+        active: this.onFontsLoaded.bind(this)
+    };
+
+    (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+    })();
+
+};
+
+
+Main.prototype.onFontsLoaded = function() {
     this.showStartScreen();
 };
 
@@ -91,6 +144,7 @@ Main.prototype.update = function() {
         this.getCurrentScreen().update();
     }
     if (this.getCurrentScreen().gameIsFinished) {
+        this.saveScore(this.getCurrentScreen().scoreDisplay.getScore());
         this.showStartScreen();
     }
     this.renderer.render(this.stage);

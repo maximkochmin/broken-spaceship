@@ -26,3 +26,7 @@ ScoreDisplay.prototype.setScore = function(score) {
     this.score = score;
     this.setText(this.score);
 };
+
+ScoreDisplay.prototype.getScore = function() {
+    return this.score;
+};
