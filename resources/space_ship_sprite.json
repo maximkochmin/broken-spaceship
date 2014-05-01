@@ -1,0 +1,60 @@
+{"frames": {
+
+"space_ship_2.png":
+{
+	"frame": {"x":2,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":64}
+},
+"space_ship_3.png":
+{
+	"frame": {"x":36,"y":2,"w":32,"h":36},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":36},
+	"sourceSize": {"w":32,"h":64}
+},
+"space_ship_4.png":
+{
+	"frame": {"x":70,"y":2,"w":32,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":42},
+	"sourceSize": {"w":32,"h":64}
+},
+"space_ship_5.png":
+{
+	"frame": {"x":2,"y":46,"w":32,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":52},
+	"sourceSize": {"w":32,"h":64}
+},
+"space_ship_6.png":
+{
+	"frame": {"x":36,"y":46,"w":32,"h":62},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":62},
+	"sourceSize": {"w":32,"h":64}
+},
+"space_ship_7.png":
+{
+	"frame": {"x":70,"y":46,"w":32,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":64},
+	"sourceSize": {"w":32,"h":64}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "space_ship_sprite.png",
+	"format": "RGBA8888",
+	"size": {"w":104,"h":112},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d438dab12acadab8d4c6120bdd5ed101:ce76701d5b8b3d65497bb481806f013a:f7f2761f26cb45506106710c5dc8b38c$"
+}
+}
