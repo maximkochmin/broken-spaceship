@@ -1,4 +1,4 @@
-function GameScreen(width, height) {
+function GameScreen(width, height, textColor) {
     PIXI.DisplayObjectContainer.call(this);
 
     this.width = width;
@@ -7,16 +7,16 @@ function GameScreen(width, height) {
     this.background = new Background(width, height);
     this.addChild(this.background);
 
-    this.scoreDisplay = new ScoreDisplay(width - 10, 10);
+    this.scoreDisplay = new ScoreDisplay(width - 10, 0, width, textColor);
     this.addChild(this.scoreDisplay);
 
-    this.ship = new Ship(width / 2, height * 4 / 5);
+    this.ship = new Ship(width / 2, height * 4 / 5, width / 20);
     this.addChild(this.ship);
 
     this.objectPool = new ObjectPool();
 
     this.obstacles = [];
-    for (y = 2000; y < GameScreen.FINISH; y+=1000 + Math.random() * 1000 | 0) {
+    for (y = 2000; y < GameScreen.FINISH; y+=300 + Math.random() * 1000 | 0) {
         this.obstacles.push(new Obstacle(
             Math.random() * width | 0,
             y

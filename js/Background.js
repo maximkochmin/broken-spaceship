@@ -1,11 +1,19 @@
 var Background = function(width, height) {
-    var texture = PIXI.Texture.fromImage("resources/space_background.png");
+    var texture = PIXI.Texture.fromImage("resources/abstract_background.png");
     PIXI.TilingSprite.call(this, texture, width, height);
+
+    var scale = width / Background.TEXTURE_WIDTH;
+    this.tileScale.x = scale;
+    this.tileScale.y = scale;
+
     this.position.x = 0;
     this.position.y = 0;
 
     this.reset();
 };
+
+
+Background.TEXTURE_WIDTH = 320;
 
 
 Background.prototype = Object.create(PIXI.TilingSprite.prototype);

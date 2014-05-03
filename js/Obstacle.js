@@ -8,10 +8,10 @@ var Obstacle = function(x, y) {
 };
 
 
-Obstacle.WIDTH = 256;
+Obstacle.WIDTH = 32;
 
 
-Obstacle.HEIGHT = 128;
+Obstacle.HEIGHT = 32;
 
 
 Obstacle.prototype.setSprite = function(sprite) {

@@ -1,31 +1,37 @@
-var Ship = function(x, y) {
+var Ship = function(x, y, width) {
     var textures = [
-        new PIXI.Texture.fromFrame("space_ship_2.png"),
-        new PIXI.Texture.fromFrame("space_ship_3.png"),
-        new PIXI.Texture.fromFrame("space_ship_4.png"),
-        new PIXI.Texture.fromFrame("space_ship_5.png"),
-        new PIXI.Texture.fromFrame("space_ship_6.png"),
-        new PIXI.Texture.fromFrame("space_ship_7.png"),
-        new PIXI.Texture.fromFrame("space_ship_6.png"),
-        new PIXI.Texture.fromFrame("space_ship_5.png"),
-        new PIXI.Texture.fromFrame("space_ship_4.png"),
-        new PIXI.Texture.fromFrame("space_ship_3.png"),
-        new PIXI.Texture.fromFrame("space_ship_2.png")
+        new PIXI.Texture.fromFrame("abstract_spaceship0.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship1.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship2.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship3.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship4.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship5.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship4.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship3.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship2.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship1.png"),
+        new PIXI.Texture.fromFrame("abstract_spaceship0.png")
     ];
 
     PIXI.MovieClip.call(this, textures);
 
     this.middlePositionX = x;
 
+    var scale = width / Ship.TEXTURE_WIDTH;
     this.anchor.x = 0.5;
     this.anchor.y = 0.25;
     this.position.x = x;
     this.position.y = y;
+    this.scale.x = scale;
+    this.scale.y = scale;
     this.animationSpeed = 0.6;
     this.loop = false;
     this.reset();
 
 };
+
+
+Ship.TEXTURE_WIDTH = 16;
 
 
 Ship.ACCELERATION = 10;
@@ -72,11 +78,12 @@ Ship.prototype.accelerate = function() {
 
 Ship.prototype.update = function() {
 
-    if (this.rotation <= - 1 / 2 * Math.PI) {
-        this.physicsAttrs.rotationSign = 1;
-    } else if (this.rotation >= 1 / 2 * Math.PI) {
-        this.physicsAttrs.rotationSign = -1;
+    var sign = function(x) { return x >= 0 ? 1 : -1; };
+
+    if (Math.abs(this.rotation) >= 0.5 * Math.PI) {
+        this.physicsAttrs.rotationSign = -1 * sign(this.rotation);
     }
+
     this.rotation += this.physicsAttrs.rotationSign * Ship.ROTATION_SPEED;
 
     if (this.physicsAttrs.shouldAccelerate) {

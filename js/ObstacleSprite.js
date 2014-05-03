@@ -1,5 +1,5 @@
 var ObstacleSprite = function() {
-    var texture = PIXI.Texture.fromImage("resources/obstacle_prototype.png");
+    var texture = PIXI.Texture.fromImage("resources/obstacle_1.png");
     PIXI.Sprite.call(this, texture, Obstacle.WIDTH, Obstacle.HEIGHT);
 
     this.position.x = 0;
