@@ -1,6 +1,6 @@
 var ObjectPool = function() {
     this.objects = {};
-    this.createObstacleSprites();
+    // this.createObstacleSprites();
 };
 
 

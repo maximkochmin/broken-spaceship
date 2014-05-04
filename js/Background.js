@@ -1,5 +1,5 @@
 var Background = function(width, height) {
-    var texture = PIXI.Texture.fromImage("resources/abstract_background.png");
+    var texture = PIXI.Texture.fromImage("resources/monokai_background.png");
     PIXI.TilingSprite.call(this, texture, width, height);
 
     var scale = width / Background.TEXTURE_WIDTH;
@@ -13,7 +13,7 @@ var Background = function(width, height) {
 };
 
 
-Background.TEXTURE_WIDTH = 320;
+Background.TEXTURE_WIDTH = 610;
 
 
 Background.prototype = Object.create(PIXI.TilingSprite.prototype);

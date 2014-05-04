@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+var colors = [
+    '#000000',
+    '#080808',
+    '#13354A',
+    '#1B1D1E',
+    '#1E0010',
+    '#232526',
+    '#272822',
+    '#293739',
+    '#333333',
+    '#3B3A32',
+    '#3E3D32',
+    '#403D3D',
+    '#455354',
+    '#465457',
+    '#4C4745',
+    '#66D9EF',
+    '#7070F0',
+    '#70F0F0',
+    '#75715E',
+    '#7E8E91',
+    '#808080',
+    '#89807D',
+    '#8F8F8F',
+    '#960050',
+    '#A6E22E',
+    '#AE81FF',
+    '#BCA3A3',
+    '#BCBCBC',
+    '#C4BE89',
+    '#E6DB74',
+    '#F8F8F0',
+    '#F8F8F2',
+    '#F92672',
+    '#FD971F',
+    '#FF0000',
+    '#FFE792',
+    '#FFFFFF',
+];
+window.onload = function() {
+    var d;
+    for (var i = 0; i < colors.length; i++) {
+        d = document.createElement('div');
+        d.style.background = colors[i];
+        d.style.width = '100px';
+        d.style.height = '50px';
+        d.style.float = 'left';
+        d.innerHTML = colors[i];
+        document.body.appendChild(d);
+    }
+};
+</script>
+</body>
+</html>

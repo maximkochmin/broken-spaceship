@@ -1,16 +1,16 @@
 var Ship = function(x, y, width) {
     var textures = [
-        new PIXI.Texture.fromFrame("abstract_spaceship0.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship1.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship2.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship3.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship4.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship5.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship4.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship3.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship2.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship1.png"),
-        new PIXI.Texture.fromFrame("abstract_spaceship0.png")
+        new PIXI.Texture.fromFrame("monokai_ship0.png"),
+        new PIXI.Texture.fromFrame("monokai_ship1.png"),
+        new PIXI.Texture.fromFrame("monokai_ship2.png"),
+        new PIXI.Texture.fromFrame("monokai_ship3.png"),
+        new PIXI.Texture.fromFrame("monokai_ship4.png"),
+        new PIXI.Texture.fromFrame("monokai_ship5.png"),
+        new PIXI.Texture.fromFrame("monokai_ship4.png"),
+        new PIXI.Texture.fromFrame("monokai_ship3.png"),
+        new PIXI.Texture.fromFrame("monokai_ship2.png"),
+        new PIXI.Texture.fromFrame("monokai_ship1.png"),
+        new PIXI.Texture.fromFrame("monokai_ship0.png")
     ];
 
     PIXI.MovieClip.call(this, textures);
@@ -18,6 +18,7 @@ var Ship = function(x, y, width) {
     this.middlePositionX = x;
 
     var scale = width / Ship.TEXTURE_WIDTH;
+
     this.anchor.x = 0.5;
     this.anchor.y = 0.25;
     this.position.x = x;
@@ -26,12 +27,13 @@ var Ship = function(x, y, width) {
     this.scale.y = scale;
     this.animationSpeed = 0.6;
     this.loop = false;
+
     this.reset();
 
 };
 
 
-Ship.TEXTURE_WIDTH = 16;
+Ship.TEXTURE_WIDTH = 49;
 
 
 Ship.ACCELERATION = 10;
@@ -93,7 +95,7 @@ Ship.prototype.update = function() {
         this.physicsAttrs.velocity.y += Ship.ACCELERATION * Math.cos(this.rotation);
     }
 
-    this.physicsAttrs.position.x += this.physicsAttrs.velocity.x;
+    this.physicsAttrs.position.x += this.physicsAttrs.velocity.x * this.scale.x;
     this.physicsAttrs.position.y += this.physicsAttrs.velocity.y;
 
     this.position.x = this.physicsAttrs.position.x;

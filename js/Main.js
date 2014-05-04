@@ -117,9 +117,9 @@ Main.prototype.showScreen = function(name) {
 
 Main.prototype.loadAssets = function() {
     var assetsToLoad = [
-        "resources/abstract_background.png",
-        "resources/abstract_spaceship.json",
-        "resources/obstacle_prototype.png"
+        "resources/monokai_background.png",
+        "resources/monokai_ship.json",
+        // "resources/obstacle_prototype.png"
     ];
     var loader = new PIXI.AssetLoader(assetsToLoad);
     loader.onComplete = this.onAssetsLoaded.bind(this);

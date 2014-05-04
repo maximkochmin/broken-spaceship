@@ -10,18 +10,10 @@ function GameScreen(width, height, textColor) {
     this.scoreDisplay = new ScoreDisplay(width - 10, 0, width, textColor);
     this.addChild(this.scoreDisplay);
 
-    this.ship = new Ship(width / 2, height * 4 / 5, width / 20);
+    this.ship = new Ship(width / 2, height * 4 / 5, width / 12);
     this.addChild(this.ship);
 
     this.objectPool = new ObjectPool();
-
-    this.obstacles = [];
-    for (y = 2000; y < GameScreen.FINISH; y+=300 + Math.random() * 1000 | 0) {
-        this.obstacles.push(new Obstacle(
-            Math.random() * width | 0,
-            y
-        ));
-    }
 
 }
 
@@ -37,14 +29,6 @@ GameScreen.prototype.reset = function() {
     this.ship.reset();
     this.background.reset();
     var o;
-    for (var i = 0; i < this.obstacles.length; i++) {
-        o = this.obstacles[i];
-        if (o.sprite !== null) {
-            this.removeChild(o.sprite);
-            this.objectPool.return('obstacle', o.sprite);
-            o.sprite = null;
-        }
-    }
 
     this.gameIsFinished = false;
 };
@@ -56,37 +40,37 @@ GameScreen.prototype.accelerate = function() {
 
 
 GameScreen.prototype.updateObstacles = function() {
-    var minY = this.ship.physicsAttrs.position.y - Main.HEIGHT / 5;
-    var maxY = this.ship.physicsAttrs.position.y + Main.HEIGHT * 4 / 5;
-    var visibleObstacles = this.obstacles.filter(function(el) {
-        return (el.position.y <= maxY);
-    });
-    var o;
-    var p = this.ship.physicsAttrs.position;
-    for (var i = 0; i < visibleObstacles.length; i++) {
-        o = visibleObstacles[i];
+    // var minY = this.ship.physicsAttrs.position.y - Main.HEIGHT / 5;
+    // var maxY = this.ship.physicsAttrs.position.y + Main.HEIGHT * 4 / 5;
+    // var visibleObstacles = this.obstacles.filter(function(el) {
+    //     return (el.position.y <= maxY);
+    // });
+    // var o;
+    // var p = this.ship.physicsAttrs.position;
+    // for (var i = 0; i < visibleObstacles.length; i++) {
+    //     o = visibleObstacles[i];
 
-        if (o.position.y < minY && o.sprite !== null) {
-            this.removeChild(o.sprite);
-            this.objectPool.return('obstacle', o.sprite);
-            o.sprite = null;
-        } else if (o.position.y >= minY) {
-            if (o.sprite === null) {
-                o.setSprite(this.objectPool.borrow('obstacle'));
-                this.addChild(o.sprite);
-            }
-            o.setViewportY(maxY - o.position.y);
-        }
+    //     if (o.position.y < minY && o.sprite !== null) {
+    //         this.removeChild(o.sprite);
+    //         this.objectPool.return('obstacle', o.sprite);
+    //         o.sprite = null;
+    //     } else if (o.position.y >= minY) {
+    //         if (o.sprite === null) {
+    //             o.setSprite(this.objectPool.borrow('obstacle'));
+    //             this.addChild(o.sprite);
+    //         }
+    //         o.setViewportY(maxY - o.position.y);
+    //     }
 
 
-        if (
-            p.x >= o.position.x - Obstacle.WIDTH / 2 && p.x <= o.position.x + Obstacle.WIDTH / 2 && p.y >= o.position.y - Obstacle.HEIGHT / 2 && p.y <= o.position.y + Obstacle.HEIGHT / 2
-        ) {
-            this.gameIsFinished = true;
-            break;
-        }
+    //     if (
+    //         p.x >= o.position.x - Obstacle.WIDTH / 2 && p.x <= o.position.x + Obstacle.WIDTH / 2 && p.y >= o.position.y - Obstacle.HEIGHT / 2 && p.y <= o.position.y + Obstacle.HEIGHT / 2
+    //     ) {
+    //         this.gameIsFinished = true;
+    //         break;
+    //     }
 
-    }
+    // }
 };
 
 
@@ -97,7 +81,7 @@ GameScreen.prototype.update = function() {
         this.gameIsFinished = true;
     }
 
-    this.updateObstacles(p);
+    // this.updateObstacles(p);
     this.scoreDisplay.setScore(parseInt(p.y / 100, 10));
     this.background.setViewportPosition(0, p.y);
 
