@@ -1,9 +1,25 @@
 var Main = function() {
+
+
+    document.body.style.background = Main.COLORS.body;
     this.gameContainer = document.getElementById('gameContainer');
-    this.stage = new PIXI.Stage(0x000000);
+    this.stage = new PIXI.Stage(parseInt('0x' + Main.COLORS.background.substr(1), 16));
+
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    if (w * Main.SCREEN_RATIO > h) {
+        w = h / Main.SCREEN_RATIO;
+    } else {
+        h = w * Main.SCREEN_RATIO;
+    }
+
+    this.width = w;
+    this.height = h;
+
     this.renderer = PIXI.autoDetectRenderer(
-        Main.WIDTH,
-        Main.HEIGHT,
+        this.width,
+        this.height,
+
         this.gameContainer
     );
 
@@ -21,10 +37,19 @@ var Main = function() {
 };
 
 
-Main.WIDTH = 640;
+
+Main.TITLE = 'BROKEN SPACESHIP';
 
 
-Main.HEIGHT = 960;
+Main.COLORS = {
+    'text': '#F8F8F2',
+    'background': '#272822',
+    'body': '#000000'
+};
+
+
+Main.SCREEN_RATIO = 1.78;
+
 
 
 Main.SCORES_HISTORY_LENGTH = 10;
@@ -54,7 +79,9 @@ Main.prototype.getCurrentScreen = function() {
 
 Main.prototype.showLoadingScreen = function() {
     if (!('loading' in this.screens)) {
-        this.screens.loading = new LoadingScreen(Main.WIDTH, Main.HEIGHT);
+
+        this.screens.loading = new LoadingScreen(this.width, this.height, Main.COLORS.text);
+
     }
     this.showScreen('loading');
 };
@@ -62,26 +89,29 @@ Main.prototype.showLoadingScreen = function() {
 
 Main.prototype.showStartScreen = function() {
     if (!('start' in this.screens)) {
-        this.screens.start = new StartScreen(Main.WIDTH, Main.HEIGHT, 'Broken spaceship');
+
+        this.screens.start = new StartScreen(this.width, this.height, Main.COLORS.text, Main.TITLE, this.startGame.bind(this));
     }
     this.screens.start.setHighScores(this.highScores, this.lastRank);
     this.showScreen('start');
-    document.body.onmousedown = this.startGame.bind(this);
+
 };
 
 
 Main.prototype.startGame = function() {
     if (!('game' in this.screens)) {
-        this.screens.game = new GameScreen(Main.WIDTH, Main.HEIGHT);
+
+        this.screens.game = new GameScreen(this.width, this.height, Main.COLORS.text);
     }
     this.showScreen('game');
     this.screens.game.reset();
-    document.body.onmousedown = this.screens.game.accelerate.bind(this.screens.game);
+
 };
 
 
 Main.prototype.showScreen = function(name) {
-    document.body.onmousedown = null;
+
+
     if (!(name in this.screens)) {
         throw new RangeError('Screen "' + name + '" does not exist');
     }
@@ -97,9 +127,10 @@ Main.prototype.showScreen = function(name) {
 
 Main.prototype.loadAssets = function() {
     var assetsToLoad = [
-        "resources/space_background.png",
-        "resources/space_ship_sprite.json",
-        "resources/obstacle_prototype.png"
+
+        "resources/monokai_background.png",
+        "resources/monokai_ship.json",
+
     ];
     var loader = new PIXI.AssetLoader(assetsToLoad);
     loader.onComplete = this.onAssetsLoaded.bind(this);
@@ -135,7 +166,10 @@ Main.prototype.loadFonts = function() {
 
 
 Main.prototype.onFontsLoaded = function() {
-    this.showStartScreen();
+
+    // this.showStartScreen();
+    this.startGame();
+
 };
 
 
@@ -145,7 +179,14 @@ Main.prototype.update = function() {
     }
     if (this.getCurrentScreen().gameIsFinished) {
         this.saveScore(this.getCurrentScreen().scoreDisplay.getScore());
-        this.showStartScreen();
+
+        var self = this;
+        setTimeout(function() {
+            self.showStartScreen();
+            self.update();
+        }, 200);
+        return;
+
     }
     this.renderer.render(this.stage);
     requestAnimFrame(this.update.bind(this));

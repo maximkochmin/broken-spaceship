@@ -1,7 +1,11 @@
-function LoadingScreen(width, height) {
+
+function LoadingScreen(width, height, textColor) {
     PIXI.DisplayObjectContainer.call(this);
 
-    this.title = new PIXI.Text('...', {font:  '30px monospace', fill: '#6391c4'});
+    fontSize = width * 0.1 | 0;
+
+    this.title = new PIXI.Text('...', {font:  fontSize + 'px monospace', fill: textColor});
+
     this.title.anchor.x = 0.5;
     this.title.anchor.y = 0;
     this.title.position.x = width / 2;

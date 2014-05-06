@@ -1,27 +1,34 @@
-function GameScreen(width, height) {
+
+function GameScreen(width, height, textColor) {
+
     PIXI.DisplayObjectContainer.call(this);
 
     this.width = width;
     this.height = height;
 
+
+    this.tileScale = this.width / GameScreen.WIDTH;
+
     this.background = new Background(width, height);
     this.addChild(this.background);
 
-    this.scoreDisplay = new ScoreDisplay(width - 10, 10);
+    this.scoreDisplay = new ScoreDisplay(width - 10, 0, width, textColor);
     this.addChild(this.scoreDisplay);
 
-    this.ship = new Ship(width / 2, height * 4 / 5);
+    this.shipPosition = {
+        x: width * 0.5,
+        y: height * 0.8
+    };
+    this.ship = new Ship(this.shipPosition, this.tileScale);
     this.addChild(this.ship);
 
-    this.objectPool = new ObjectPool();
+    this.objectPool = new ObjectPool(this.tileScale);
 
     this.obstacles = [];
-    for (y = 2000; y < GameScreen.FINISH; y+=1000 + Math.random() * 1000 | 0) {
-        this.obstacles.push(new Obstacle(
-            Math.random() * width | 0,
-            y
-        ));
-    }
+
+    this.setInteractive(true);
+    this.touchstart = this.accelerate.bind(this);
+    this.mousedown = this.accelerate.bind(this);
 
 }
 
@@ -29,22 +36,34 @@ function GameScreen(width, height) {
 GameScreen.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
 
-GameScreen.FINISH = 50000;
+
+GameScreen.WIDTH = 610;
+
+
+GameScreen.prototype.generateObstacles = function() {
+    var x, obstacle, spriteId, spriteInfo;
+    var obstacleIds = Object.keys(ObjectPool.OBSTACLES);
+    for (var i = 0; i < this.obstacles.length; i++) {
+        this.obstacles[i].unsetSprite(this.objectPool, this);
+    }
+    this.obstacles = [];
+    for (var y = 0; y < this.height * 1000 / this.tileScale; y += this.height / this.tileScale / 4) {
+        if (y === 0) continue;
+        x = Math.random() * this.width | 0 - this.width * 0.5;
+        spriteId = obstacleIds[Math.random() * obstacleIds.length | 0];
+        spriteInfo = ObjectPool.OBSTACLES[spriteId];
+        this.obstacles.push(new spriteInfo.handler(x, y, this.width * 0.5, spriteId, spriteInfo));
+    }
+};
+
 
 
 GameScreen.prototype.reset = function() {
     this.scoreDisplay.setScore(0);
+
+    this.generateObstacles();
     this.ship.reset();
     this.background.reset();
-    var o;
-    for (var i = 0; i < this.obstacles.length; i++) {
-        o = this.obstacles[i];
-        if (o.sprite !== null) {
-            this.removeChild(o.sprite);
-            this.objectPool.return('obstacle', o.sprite);
-            o.sprite = null;
-        }
-    }
 
     this.gameIsFinished = false;
 };
@@ -56,8 +75,11 @@ GameScreen.prototype.accelerate = function() {
 
 
 GameScreen.prototype.updateObstacles = function() {
-    var minY = this.ship.physicsAttrs.position.y - Main.HEIGHT / 5;
-    var maxY = this.ship.physicsAttrs.position.y + Main.HEIGHT * 4 / 5;
+
+    var minY = this.ship.physicsAttrs.position.y - (this.height - this.shipPosition.y) / this.tileScale;
+    var maxY = this.ship.physicsAttrs.position.y + this.shipPosition.y / this.tileScale;
+
+
     var visibleObstacles = this.obstacles.filter(function(el) {
         return (el.position.y <= maxY);
     });
@@ -67,21 +89,15 @@ GameScreen.prototype.updateObstacles = function() {
         o = visibleObstacles[i];
 
         if (o.position.y < minY && o.sprite !== null) {
-            this.removeChild(o.sprite);
-            this.objectPool.return('obstacle', o.sprite);
-            o.sprite = null;
+
+            o.unsetSprite(this.objectPool, this);
         } else if (o.position.y >= minY) {
-            if (o.sprite === null) {
-                o.setSprite(this.objectPool.borrow('obstacle'));
-                this.addChild(o.sprite);
-            }
-            o.setViewportY(maxY - o.position.y);
+            o.setSprite(this.objectPool, this);
+            o.setViewportY((maxY - o.position.y) * this.tileScale);
         }
 
+        if (o.collides(p)) {
 
-        if (
-            p.x >= o.position.x - Obstacle.WIDTH / 2 && p.x <= o.position.x + Obstacle.WIDTH / 2 && p.y >= o.position.y - Obstacle.HEIGHT / 2 && p.y <= o.position.y + Obstacle.HEIGHT / 2
-        ) {
             this.gameIsFinished = true;
             break;
         }
@@ -93,12 +109,14 @@ GameScreen.prototype.updateObstacles = function() {
 GameScreen.prototype.update = function() {
 
     var p = this.ship.update();
-    if (p.x <= 0 || p.x >= this.width) {
+
+    if (Math.abs(p.x) >= GameScreen.WIDTH / 2) {
         this.gameIsFinished = true;
     }
 
-    this.updateObstacles(p);
-    this.scoreDisplay.setScore(parseInt(p.y / 100, 10));
+    this.updateObstacles();
+    this.scoreDisplay.setScore(parseInt(p.y * 0.01, 10));
+
     this.background.setViewportPosition(0, p.y);
 
 };

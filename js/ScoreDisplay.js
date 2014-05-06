@@ -1,6 +1,12 @@
-var ScoreDisplay = function(x, y) {
 
-    PIXI.Text.call(this, '', ScoreDisplay.FONT_OPTIONS);
+var ScoreDisplay = function(x, y, screenWidth, textColor) {
+
+    var fontSize = screenWidth * 0.08 | 0;
+    PIXI.Text.call(this, '', {
+        'font': fontSize + 'px Source Code Pro',
+        'fill': textColor
+    });
+
 
     this.score = 0;
     this.position.x = x;
@@ -8,7 +14,7 @@ var ScoreDisplay = function(x, y) {
     this.anchor.x = 1;
     this.anchor.y = 0;
 
-    this.setText(this.score);
+
 
 };
 
@@ -16,10 +22,6 @@ var ScoreDisplay = function(x, y) {
 ScoreDisplay.prototype = Object.create(PIXI.Text.prototype);
 
 
-ScoreDisplay.FONT_OPTIONS = {
-    'font': '30px Monaco',
-    'fill': 'rgba(255, 255, 255, 0.5)'
-};
 
 
 ScoreDisplay.prototype.setScore = function(score) {

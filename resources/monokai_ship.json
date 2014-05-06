@@ -1,0 +1,60 @@
+{"frames": {
+
+"monokai_ship0.png":
+{
+	"frame": {"x":2,"y":2,"w":45,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":90},
+	"sourceSize": {"w":45,"h":90}
+},
+"monokai_ship1.png":
+{
+	"frame": {"x":2,"y":94,"w":45,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":90},
+	"sourceSize": {"w":45,"h":90}
+},
+"monokai_ship2.png":
+{
+	"frame": {"x":2,"y":186,"w":45,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":90},
+	"sourceSize": {"w":45,"h":90}
+},
+"monokai_ship3.png":
+{
+	"frame": {"x":2,"y":278,"w":45,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":90},
+	"sourceSize": {"w":45,"h":90}
+},
+"monokai_ship4.png":
+{
+	"frame": {"x":2,"y":370,"w":45,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":90},
+	"sourceSize": {"w":45,"h":90}
+},
+"monokai_ship5.png":
+{
+	"frame": {"x":2,"y":462,"w":45,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":90},
+	"sourceSize": {"w":45,"h":90}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "monokai_ship.png",
+	"format": "RGBA8888",
+	"size": {"w":49,"h":554},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:72d160aa4f7a2016346bbecf97a1711d:d34e092a1a8561187b8c5ae367ccc8e1:208f1f4a10d3e0b114882709c531ddad$"
+}
+}

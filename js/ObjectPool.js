@@ -1,13 +1,81 @@
-var ObjectPool = function() {
+
+var ObjectPool = function(scale) {
     this.objects = {};
+    this.scale = scale;
+
     this.createObstacleSprites();
 };
 
 
+
+ObjectPool.NUMBER_OF_EACH_SPRITE = 5;
+
+
+ObjectPool.OBSTACLES = {
+    redStar150: {
+        width: 150,
+        height: 150,
+        texture: 'resources/monokai_red_star_150.png',
+        handler: StarObstacle
+    },
+    redStar99x65: {
+        width: 99,
+        height: 65,
+        texture: 'resources/monokai_red_star_99_65.png',
+        handler: StarObstacle
+    },
+    redGates150: {
+        width: 610,
+        height: 150,
+        texture: 'resources/monokai_red_gates_150.png',
+        handler: GatesObstacle,
+        leftBlockWidth: 175,
+        rightBlockWidth: 350,
+        spriteOptions: {
+            anchor: new PIXI.Point(0, 0)
+        }
+    },
+    blueGates30_1: {
+        width: 610,
+        height: 30,
+        texture: 'resources/monokai_blue_gates_30_1.png',
+        handler: GatesObstacle,
+        leftBlockWidth: 210,
+        rightBlockWidth: 410,
+        spriteOptions: {
+            anchor: new PIXI.Point(0, 0)
+        }
+    },
+    obstacle75: {
+        width: 75,
+        height: 75,
+        texture: 'resources/monokai_obstacle_75.png',
+        handler: Obstacle
+    },
+    obstacle99x51: {
+        width: 99,
+        height: 51,
+        texture: 'resources/monokai_obstacle_99_51.png',
+        handler: Obstacle
+    }
+};
+
+
 ObjectPool.prototype.createObstacleSprites = function() {
-    this.objects.obstacle = [];
-    for (var i = 0; i < 10; i++) {
-        this.objects.obstacle.push(new ObstacleSprite());
+    var j, o;
+    for (var i in ObjectPool.OBSTACLES) {
+
+        o = ObjectPool.OBSTACLES[i];
+        if (typeof o.spriteOptions !== "object") {
+            o.spriteOptions = {};
+        }
+        o.spriteOptions.scale = new PIXI.Point(this.scale, this.scale);
+
+        this.objects[i] = [];
+        for (j = 0; j < ObjectPool.NUMBER_OF_EACH_SPRITE; j++) {
+            this.objects[i].push(new ObstacleSprite(o.width, o.height, o.texture, o.spriteOptions));
+        }
+
     }
 };
 

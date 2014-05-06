@@ -1,28 +1,35 @@
-var Ship = function(x, y) {
+
+var Ship = function(shipPosition, scale) {
     var textures = [
-        new PIXI.Texture.fromFrame("space_ship_2.png"),
-        new PIXI.Texture.fromFrame("space_ship_3.png"),
-        new PIXI.Texture.fromFrame("space_ship_4.png"),
-        new PIXI.Texture.fromFrame("space_ship_5.png"),
-        new PIXI.Texture.fromFrame("space_ship_6.png"),
-        new PIXI.Texture.fromFrame("space_ship_7.png"),
-        new PIXI.Texture.fromFrame("space_ship_6.png"),
-        new PIXI.Texture.fromFrame("space_ship_5.png"),
-        new PIXI.Texture.fromFrame("space_ship_4.png"),
-        new PIXI.Texture.fromFrame("space_ship_3.png"),
-        new PIXI.Texture.fromFrame("space_ship_2.png")
+        new PIXI.Texture.fromFrame("monokai_ship0.png"),
+        new PIXI.Texture.fromFrame("monokai_ship1.png"),
+        new PIXI.Texture.fromFrame("monokai_ship2.png"),
+        new PIXI.Texture.fromFrame("monokai_ship3.png"),
+        new PIXI.Texture.fromFrame("monokai_ship4.png"),
+        new PIXI.Texture.fromFrame("monokai_ship5.png"),
+        new PIXI.Texture.fromFrame("monokai_ship4.png"),
+        new PIXI.Texture.fromFrame("monokai_ship3.png"),
+        new PIXI.Texture.fromFrame("monokai_ship2.png"),
+        new PIXI.Texture.fromFrame("monokai_ship1.png"),
+        new PIXI.Texture.fromFrame("monokai_ship0.png")
+
     ];
 
     PIXI.MovieClip.call(this, textures);
 
-    this.middlePositionX = x;
+
+    this.xOffset = shipPosition.x;
 
     this.anchor.x = 0.5;
     this.anchor.y = 0.25;
-    this.position.x = x;
-    this.position.y = y;
+    this.position.x = shipPosition.x;
+    this.position.y = shipPosition.y;
+    this.scale.x = scale;
+    this.scale.y = scale;
     this.animationSpeed = 0.6;
     this.loop = false;
+
+
     this.reset();
 
 };
@@ -46,11 +53,13 @@ Ship.prototype = Object.create(PIXI.MovieClip.prototype);
 Ship.prototype.reset = function() {
     this.physicsAttrs = {
         shouldAccelerate: false,
-        position: {x: this.middlePositionX, y: 0},
+
+        position: {x: 0, y: 0},
         velocity: {x: 0, y: 0},
         rotationSign: 1
     };
-    this.position.x = this.middlePositionX;
+    this.position.x = this.xOffset;
+
     this.rotation = 0;
 };
 
@@ -72,11 +81,14 @@ Ship.prototype.accelerate = function() {
 
 Ship.prototype.update = function() {
 
-    if (this.rotation <= - 1 / 2 * Math.PI) {
-        this.physicsAttrs.rotationSign = 1;
-    } else if (this.rotation >= 1 / 2 * Math.PI) {
-        this.physicsAttrs.rotationSign = -1;
+
+    var sign = function(x) { return x >= 0 ? 1 : -1; };
+
+    if (Math.abs(this.rotation) >= 0.5 * Math.PI) {
+        this.physicsAttrs.rotationSign = -1 * sign(this.rotation);
     }
+
+
     this.rotation += this.physicsAttrs.rotationSign * Ship.ROTATION_SPEED;
 
     if (this.physicsAttrs.shouldAccelerate) {
@@ -89,7 +101,9 @@ Ship.prototype.update = function() {
     this.physicsAttrs.position.x += this.physicsAttrs.velocity.x;
     this.physicsAttrs.position.y += this.physicsAttrs.velocity.y;
 
-    this.position.x = this.physicsAttrs.position.x;
+
+    this.position.x = this.xOffset + this.physicsAttrs.position.x * this.scale.x;
+
 
     if (Math.abs(this.physicsAttrs.velocity.x) > Ship.EPSILON) {
         this.physicsAttrs.velocity.x = Ship.FRICTION * this.physicsAttrs.velocity.x;
