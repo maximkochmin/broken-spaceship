@@ -1,11 +1,17 @@
-var ObstacleSprite = function() {
-    var texture = PIXI.Texture.fromImage("resources/obstacle_1.png");
-    PIXI.Sprite.call(this, texture, Obstacle.WIDTH, Obstacle.HEIGHT);
+var ObstacleSprite = function(width, height, texture, options) {
 
-    this.position.x = 0;
-    this.position.y = 0;
+    texture = PIXI.Texture.fromImage(texture);
+    PIXI.Sprite.call(this, texture, width, height);
+
+    // default options
     this.anchor.x = 0.5;
-    this.anchor.y = 0.5;
+    this.anchor.y = 0;
+
+    if (typeof options === "object") {
+        for (var i in options) {
+            this[i] = options[i];
+        }
+    }
 
 };
 

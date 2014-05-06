@@ -1,9 +1,9 @@
-var StartScreen = function (width, height, textColor, title) {
+var StartScreen = function (width, height, textColor, title, clickCallback) {
 
     PIXI.DisplayObjectContainer.call(this);
 
     this.width = width;
-    this.titleFontSize = width * 0.105 | 0;
+    this.titleFontSize = width * 0.100 | 0;
     this.textFontSize = width * 0.09 | 0;
 
     var font = "Source Code Pro";
@@ -28,6 +28,10 @@ var StartScreen = function (width, height, textColor, title) {
     this.highScores.position.x = width * 0.5;
     this.highScores.position.y = height * 0.3;
     this.addChild(this.highScores);
+
+    this.setInteractive(true);
+    this.touchstart = clickCallback;
+    this.mousedown = clickCallback;
 
 };
 

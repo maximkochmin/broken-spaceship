@@ -1,8 +1,8 @@
 var Main = function() {
 
-    document.body.style.background = Main.COLORS.background;
+    document.body.style.background = Main.COLORS.body;
     this.gameContainer = document.getElementById('gameContainer');
-    this.stage = new PIXI.Stage(Main.COLORS.background);
+    this.stage = new PIXI.Stage(parseInt('0x' + Main.COLORS.background.substr(1), 16));
 
     var w = window.innerWidth;
     var h = window.innerHeight;
@@ -39,8 +39,9 @@ Main.TITLE = 'BROKEN SPACESHIP';
 
 
 Main.COLORS = {
-    'text': '#6391c4',
-    'background': '#000'
+    'text': '#F8F8F2',
+    'background': '#272822',
+    'body': '#000000'
 };
 
 
@@ -82,11 +83,10 @@ Main.prototype.showLoadingScreen = function() {
 
 Main.prototype.showStartScreen = function() {
     if (!('start' in this.screens)) {
-        this.screens.start = new StartScreen(this.width, this.height, Main.COLORS.text, Main.TITLE);
+        this.screens.start = new StartScreen(this.width, this.height, Main.COLORS.text, Main.TITLE, this.startGame.bind(this));
     }
     this.screens.start.setHighScores(this.highScores, this.lastRank);
     this.showScreen('start');
-    document.body.onmousedown = this.startGame.bind(this);
 };
 
 
@@ -96,12 +96,10 @@ Main.prototype.startGame = function() {
     }
     this.showScreen('game');
     this.screens.game.reset();
-    document.body.onmousedown = this.screens.game.accelerate.bind(this.screens.game);
 };
 
 
 Main.prototype.showScreen = function(name) {
-    document.body.onmousedown = null;
     if (!(name in this.screens)) {
         throw new RangeError('Screen "' + name + '" does not exist');
     }
@@ -119,7 +117,6 @@ Main.prototype.loadAssets = function() {
     var assetsToLoad = [
         "resources/monokai_background.png",
         "resources/monokai_ship.json",
-        // "resources/obstacle_prototype.png"
     ];
     var loader = new PIXI.AssetLoader(assetsToLoad);
     loader.onComplete = this.onAssetsLoaded.bind(this);
@@ -165,6 +162,7 @@ Main.prototype.update = function() {
         this.getCurrentScreen().update();
     }
     if (this.getCurrentScreen().gameIsFinished) {
+        return;
         this.saveScore(this.getCurrentScreen().scoreDisplay.getScore());
         this.showStartScreen();
     }

@@ -30,6 +30,7 @@ Background.prototype.setViewportPosition = function(x, y) {
     this.tilePosition.y = y;
 };
 
+
 Background.prototype.getViewportPosition = function() {
     return this.tilePosition;
 };
