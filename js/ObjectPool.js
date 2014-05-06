@@ -31,6 +31,29 @@ ObjectPool.OBSTACLES = {
         spriteOptions: {
             anchor: new PIXI.Point(0, 0)
         }
+    },
+    blueGates30_1: {
+        width: 610,
+        height: 30,
+        texture: 'resources/monokai_blue_gates_30_1.png',
+        handler: GatesObstacle,
+        leftBlockWidth: 210,
+        rightBlockWidth: 410,
+        spriteOptions: {
+            anchor: new PIXI.Point(0, 0)
+        }
+    },
+    obstacle75: {
+        width: 75,
+        height: 75,
+        texture: 'resources/monokai_obstacle_75.png',
+        handler: Obstacle
+    },
+    obstacle99x51: {
+        width: 99,
+        height: 51,
+        texture: 'resources/monokai_obstacle_99_51.png',
+        handler: Obstacle
     }
 };
 
