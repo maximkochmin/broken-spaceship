@@ -42,7 +42,7 @@ GameScreen.prototype.generateObstacles = function() {
         this.obstacles[i].unsetSprite(this.objectPool, this);
     }
     this.obstacles = [];
-    for (var y = 0; y < this.height / this.tileScale; y += this.height / this.tileScale / 4) {
+    for (var y = 0; y < this.height * 1000 / this.tileScale; y += this.height / this.tileScale / 4) {
         if (y === 0) continue;
         x = Math.random() * this.width | 0 - this.width * 0.5;
         spriteId = obstacleIds[Math.random() * obstacleIds.length | 0];

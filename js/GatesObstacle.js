@@ -27,9 +27,5 @@ GatesObstacle.prototype.collides = function(point) {
         (point.y > this.position.y - h && point.y < this.position.y)
     );
 
-    if (r) {
-        console.log(point.x, point.y, this.position.y, w, h, w1, w2);
-    }
-
     return r;
 };;

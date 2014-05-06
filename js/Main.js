@@ -162,9 +162,13 @@ Main.prototype.update = function() {
         this.getCurrentScreen().update();
     }
     if (this.getCurrentScreen().gameIsFinished) {
-        return;
         this.saveScore(this.getCurrentScreen().scoreDisplay.getScore());
-        this.showStartScreen();
+        var self = this;
+        setTimeout(function() {
+            self.showStartScreen();
+            self.update();
+        }, 200);
+        return;
     }
     this.renderer.render(this.stage);
     requestAnimFrame(this.update.bind(this));
