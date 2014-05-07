@@ -45,7 +45,8 @@ GameScreen.prototype.generateObstacles = function() {
     this.obstacles = [];
     for (var y = 0; y < this.height * 1000 / this.tileScale; y += this.height / this.tileScale / 4) {
         if (y === 0) continue;
-        x = Math.random() * this.width | 0 - this.width * 0.5;
+        x = Math.random() * this.width | 0;
+        x -= this.width * 0.5;
         spriteId = obstacleIds[Math.random() * obstacleIds.length | 0];
         spriteInfo = ObjectPool.OBSTACLES[spriteId];
         this.obstacles.push(new spriteInfo.handler(x, y, this.width * 0.5, spriteId, spriteInfo));
