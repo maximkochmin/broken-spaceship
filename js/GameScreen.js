@@ -26,10 +26,6 @@ function GameScreen(width, height, textColor) {
 
     this.obstacles = [];
 
-    this.setInteractive(true);
-    this.touchstart = this.accelerate.bind(this);
-    this.mousedown = this.accelerate.bind(this);
-
 }
 
 
