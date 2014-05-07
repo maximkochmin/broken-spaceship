@@ -32,6 +32,7 @@ var Main = function() {
     this.showLoadingScreen();
     this.update();
     this.loadAssets();
+    this.stage.setInteractive(true);
 };
 
 
@@ -83,10 +84,13 @@ Main.prototype.showLoadingScreen = function() {
 
 Main.prototype.showStartScreen = function() {
     if (!('start' in this.screens)) {
-        this.screens.start = new StartScreen(this.width, this.height, Main.COLORS.text, Main.TITLE, this.startGame.bind(this));
+        this.screens.start = new StartScreen(this.width, this.height, Main.COLORS.text, Main.TITLE);
     }
     this.screens.start.setHighScores(this.highScores, this.lastRank);
     this.showScreen('start');
+
+    this.stage.touchstart = this.startGame.bind(this);
+    this.stage.mousedown = this.startGame.bind(this);
 };
 
 
@@ -96,10 +100,15 @@ Main.prototype.startGame = function() {
     }
     this.showScreen('game');
     this.screens.game.reset();
+
+    this.stage.touchstart = this.screens.game.accelerate.bind(this.screens.game);
+    this.stage.mousedown = this.screens.game.accelerate.bind(this.screens.game);
 };
 
 
 Main.prototype.showScreen = function(name) {
+    this.stage.touchstart = undefined;
+    this.stage.mousedown = undefined;
     if (!(name in this.screens)) {
         throw new RangeError('Screen "' + name + '" does not exist');
     }

@@ -1,4 +1,4 @@
-var StartScreen = function (width, height, textColor, title, clickCallback) {
+var StartScreen = function (width, height, textColor, title) {
 
     PIXI.DisplayObjectContainer.call(this);
 
@@ -28,10 +28,6 @@ var StartScreen = function (width, height, textColor, title, clickCallback) {
     this.highScores.position.x = width * 0.5;
     this.highScores.position.y = height * 0.3;
     this.addChild(this.highScores);
-
-    this.setInteractive(true);
-    this.touchstart = clickCallback;
-    this.mousedown = clickCallback;
 
 };
 
