@@ -15,7 +15,7 @@ Obstacle.prototype.setSprite = function(objectPool, container) {
     if (this.sprite !== null) return;
     this.sprite = objectPool.borrow(this.spriteId);
     this.sprite.position.x = this.xOffset + this.position.x * this.spriteInfo.spriteOptions.scale.x;
-    container.addChild(this.sprite);
+    container.addChildAt(this.sprite, 2);
 };
 
 
