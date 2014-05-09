@@ -21,6 +21,12 @@ ObjectPool.OBSTACLES = {
         texture: 'resources/monokai_red_star_150.png',
         handler: StarObstacle
     },
+    yellowStar321x107: {
+        width: 321,
+        height: 107,
+        texture: 'resources/monokai_yellow_star_321_107.png',
+        handler: StarObstacle
+    },
     redStar99x65: {
         width: 99,
         height: 65,

@@ -34,7 +34,7 @@ var Ship = function(shipPosition, scale) {
 Ship.ACCELERATION = 10;
 
 
-Ship.ROTATION_SPEED = Math.PI / 45;
+Ship.ROTATION_SPEED = Math.PI / 40;
 
 
 Ship.FRICTION = 0.99;

@@ -32,19 +32,22 @@ GameScreen.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 GameScreen.WIDTH = 610;
 
 
-GameScreen.prototype.addObstacles = function(startY, howMany, gap) {
+GameScreen.prototype.addObstacles = function(startY, howMany, gapMin, gapMax) {
     var x, y, spriteId, spriteInfo, handler;
     var obstacleIds = Object.keys(ObjectPool.OBSTACLES);
 
     obstacleIds.splice(obstacleIds.indexOf('hint'), 1);
 
+    y = startY;
     for (var i = 0; i < howMany; i++) {
         x = Math.random() * this.width | 0;
         x -= this.width * 0.5;
-        y = (startY + i * gap) / this.tileScale;
         spriteId = obstacleIds[Math.random() * obstacleIds.length | 0];
         spriteInfo = ObjectPool.OBSTACLES[spriteId];
-        handler = new spriteInfo.handler(x, y, this.width * 0.5, spriteId, spriteInfo);
+        y += spriteInfo.height;
+        y += gapMin;
+        y += Math.random() * (gapMax - gapMin) | 0;
+        handler = new spriteInfo.handler(x, y / this.tileScale, this.width * 0.5, spriteId, spriteInfo);
         this.obstacles.push(handler);
     }
 };
@@ -88,7 +91,7 @@ GameScreen.prototype.updateObstacles = function() {
     var maxY = this.ship.physicsAttrs.position.y + this.shipPosition.y / this.tileScale;
 
     if (this.passedObstacles > this.obstacles.length - 1) {
-        this.addObstacles(maxY + 200, 50, this.height / 3.3);
+        this.addObstacles(maxY + 200, 50, 100, 500);
     }
 
     var visibleObstacles = this.obstacles.filter(function(el) {
@@ -119,7 +122,7 @@ GameScreen.prototype.updateObstacles = function() {
 GameScreen.prototype.update = function() {
 
     var p = this.ship.update();
-    if (Math.abs(p.x) >= GameScreen.WIDTH / 2 + 40) {
+    if (Math.abs(p.x) >= GameScreen.WIDTH / 2 + 20) {
         this.gameIsFinished = true;
     }
 
