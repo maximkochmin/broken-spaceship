@@ -1,8 +1,9 @@
-function GameScreen(width, height) {
+function GameScreen(width, height, audio) {
     PIXI.DisplayObjectContainer.call(this);
 
     this.width = width;
     this.height = height;
+    this.audio = audio;
 
     this.tileScale = this.width / GameScreen.WIDTH;
 
@@ -13,7 +14,7 @@ function GameScreen(width, height) {
         x: width * 0.5,
         y: height * 0.8
     };
-    this.ship = new Ship(this.shipPosition, this.tileScale);
+    this.ship = new Ship(this.shipPosition, this.tileScale, audio);
     this.addChildAt(this.ship, 1);
 
     this.scoreDisplay = new ScoreDisplay(width - 10, 0, width);
@@ -85,6 +86,12 @@ GameScreen.prototype.accelerate = function() {
 };
 
 
+GameScreen.prototype.gameOver = function() {
+    this.audio.playSound('resources/ship_crash.wav');
+    this.gameIsFinished = true;
+};
+
+
 GameScreen.prototype.updateObstacles = function() {
 
     var minY = this.ship.physicsAttrs.position.y - (this.height - this.shipPosition.y) / this.tileScale;
@@ -111,7 +118,7 @@ GameScreen.prototype.updateObstacles = function() {
         }
 
         if (o.collides(p)) {
-            this.gameIsFinished = true;
+            this.gameOver();
             break;
         }
 
@@ -123,7 +130,7 @@ GameScreen.prototype.update = function() {
 
     var p = this.ship.update();
     if (Math.abs(p.x) >= GameScreen.WIDTH / 2 + 20) {
-        this.gameIsFinished = true;
+        this.gameOver();
     }
 
     this.updateObstacles();

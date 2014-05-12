@@ -99,7 +99,7 @@ Main.prototype.showStartScreen = function() {
 
 Main.prototype.startGame = function() {
     if (!('game' in this.screens)) {
-        this.screens.game = new GameScreen(this.width, this.height);
+        this.screens.game = new GameScreen(this.width, this.height, this.audio);
     }
     this.showScreen('game');
     this.screens.game.reset();
@@ -164,7 +164,18 @@ Main.prototype.loadFonts = function() {
 
 
 Main.prototype.onFontsLoaded = function() {
-    this.showStartScreen();
+    this.loadSounds();
+};
+
+
+Main.prototype.loadSounds = function() {
+    this.audio = new Audio([
+        'resources/ship_acc_norm.wav',
+        'resources/ship_acc_slow.wav',
+        'resources/ship_acc_fast.wav',
+        'resources/ship_crash.wav'
+    ]);
+    this.audio.loadSounds(this.showStartScreen.bind(this));
 };
 
 

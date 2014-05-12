@@ -1,4 +1,4 @@
-var Ship = function(shipPosition, scale) {
+var Ship = function(shipPosition, scale, audio) {
     var textures = [
         new PIXI.Texture.fromFrame("monokai_ship0.png"),
         new PIXI.Texture.fromFrame("monokai_ship1.png"),
@@ -17,6 +17,8 @@ var Ship = function(shipPosition, scale) {
 
     this.xOffset = shipPosition.x;
 
+    this.audio = audio;
+
     this.anchor.x = 0.5;
     this.anchor.y = 0.25;
     this.position.x = shipPosition.x;
@@ -34,7 +36,7 @@ var Ship = function(shipPosition, scale) {
 Ship.ACCELERATION = 10;
 
 
-Ship.ROTATION_SPEED = Math.PI / 1000;
+Ship.ROTATION_SPEED = Math.PI / 800;
 
 
 Ship.FRICTION = 0.99;
@@ -90,6 +92,14 @@ Ship.prototype.update = function() {
     this.lastTimestamp = t;
 
     if (this.physicsAttrs.shouldAccelerate) {
+        var v = Math.abs(this.physicsAttrs.velocity.y);
+        var s = 'norm';
+        if (v < 5) {
+            s = 'slow'
+        } else if (v > 10) {
+            s = 'fast';
+        }
+        this.audio.playSound('resources/ship_acc_' + s + '.wav');
         this.gotoAndPlay(0);
         this.physicsAttrs.shouldAccelerate = false;
         this.physicsAttrs.velocity.x += Ship.ACCELERATION * Math.sin(this.rotation);
