@@ -47,7 +47,7 @@ GameScreen.prototype.addObstacles = function(startY, howMany, gapMin, gapMax) {
         y += spriteInfo.height;
         y += gapMin;
         y += Math.random() * (gapMax - gapMin) | 0;
-        handler = new spriteInfo.handler(x, y / this.tileScale, this.width * 0.5, spriteId, spriteInfo);
+        handler = new spriteInfo.handler(x, y, this.width * 0.5, spriteId, spriteInfo);
         this.obstacles.push(handler);
     }
 };
@@ -90,7 +90,7 @@ GameScreen.prototype.updateObstacles = function() {
     var minY = this.ship.physicsAttrs.position.y - (this.height - this.shipPosition.y) / this.tileScale;
     var maxY = this.ship.physicsAttrs.position.y + this.shipPosition.y / this.tileScale;
 
-    if (this.passedObstacles > this.obstacles.length - 1) {
+    if (this.passedObstacles > this.obstacles.length - 2) {
         this.addObstacles(maxY + 200, 50, 100, 500);
     }
 

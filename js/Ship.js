@@ -34,7 +34,7 @@ var Ship = function(shipPosition, scale) {
 Ship.ACCELERATION = 10;
 
 
-Ship.ROTATION_SPEED = Math.PI / 40;
+Ship.ROTATION_SPEED = Math.PI / 1000;
 
 
 Ship.FRICTION = 0.99;
@@ -54,6 +54,7 @@ Ship.prototype.reset = function() {
         rotationSign: 1
     };
     this.position.x = this.xOffset;
+    this.lastTimestamp = null;
     this.rotation = 0;
 };
 
@@ -81,7 +82,12 @@ Ship.prototype.update = function() {
         this.physicsAttrs.rotationSign = -1 * sign(this.rotation);
     }
 
-    this.rotation += this.physicsAttrs.rotationSign * Ship.ROTATION_SPEED;
+    var t = (new Date()).getTime();
+    if (!this.lastTimestamp) {
+        this.lastTimestamp = t;
+    }
+    this.rotation += this.physicsAttrs.rotationSign * Ship.ROTATION_SPEED * (t - this.lastTimestamp);
+    this.lastTimestamp = t;
 
     if (this.physicsAttrs.shouldAccelerate) {
         this.gotoAndPlay(0);

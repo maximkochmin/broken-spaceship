@@ -169,6 +169,7 @@ Main.prototype.onFontsLoaded = function() {
 
 
 Main.prototype.update = function() {
+
     if ('update' in this.getCurrentScreen()) {
         this.getCurrentScreen().update();
     }
