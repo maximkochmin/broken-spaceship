@@ -102,14 +102,14 @@ GameScreen.prototype.updateObstacles = function() {
     }
 
     var visibleObstacles = this.obstacles.filter(function(el) {
-        return (el.position.y <= maxY + 200);
+        return el.position.y <= maxY + 200 && (el.position.y > minY || el.sprite !== null);
     });
     var o;
     var p = this.ship.physicsAttrs.position;
     for (var i = 0; i < visibleObstacles.length; i++) {
         o = visibleObstacles[i];
 
-        if (o.position.y < minY && o.sprite !== null) {
+        if (o.position.y < minY) {
             this.passedObstacles++;
             o.unsetSprite(this.objectPool, this);
         } else if (o.position.y >= minY) {

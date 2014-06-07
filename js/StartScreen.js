@@ -28,8 +28,6 @@ var StartScreen = function (width, height, title) {
     this.last.position.y = height * 0.2;
     this.addChild(this.last);
 
-
-
     this.highScores = new PIXI.Text('', {
         font: this.textFontSize + 'px ' + font,
         fill: Main.COLORS.text

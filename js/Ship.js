@@ -76,6 +76,11 @@ Ship.prototype.accelerate = function() {
 };
 
 
+Ship.prototype.playAccelerationSound = function() {
+    this.audio.playSound('resources/ship_accelerate.mp3');
+};
+
+
 Ship.prototype.update = function() {
 
     var sign = function(x) { return x >= 0 ? 1 : -1; };
@@ -92,14 +97,7 @@ Ship.prototype.update = function() {
     this.lastTimestamp = t;
 
     if (this.physicsAttrs.shouldAccelerate) {
-        var v = Math.abs(this.physicsAttrs.velocity.y);
-        var s = 'norm';
-        if (v < 5) {
-            s = 'slow'
-        } else if (v > 10) {
-            s = 'fast';
-        }
-        this.audio.playSound('resources/ship_acc_' + s + '.wav');
+        this.playAccelerationSound();
         this.gotoAndPlay(0);
         this.physicsAttrs.shouldAccelerate = false;
         this.physicsAttrs.velocity.x += Ship.ACCELERATION * Math.sin(this.rotation);

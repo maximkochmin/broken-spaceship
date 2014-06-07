@@ -170,9 +170,7 @@ Main.prototype.onFontsLoaded = function() {
 
 Main.prototype.loadSounds = function() {
     this.audio = new Audio([
-        'resources/ship_acc_norm.wav',
-        'resources/ship_acc_slow.wav',
-        'resources/ship_acc_fast.wav',
+        'resources/ship_accelerate.mp3',
         'resources/ship_crash.wav'
     ]);
     this.audio.loadSounds(this.showStartScreen.bind(this));
