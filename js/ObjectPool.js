@@ -12,10 +12,22 @@ ObjectPool.NUMBER_OF_EACH_SPRITE = 5;
 
 
 ObjectPool.OBSTACLES = {
+    hint: {
+        width: 610,
+        height: 610,
+        texture: 'resources/monokai_hint.png',
+        handler: TransparentObstacle
+    },
     redStar150: {
         width: 150,
         height: 150,
         texture: 'resources/monokai_red_star_150.png',
+        handler: StarObstacle
+    },
+    yellowStar321x107: {
+        width: 321,
+        height: 107,
+        texture: 'resources/monokai_yellow_star_321_107.png',
         handler: StarObstacle
     },
     redStar99x65: {
@@ -29,8 +41,8 @@ ObjectPool.OBSTACLES = {
         height: 150,
         texture: 'resources/monokai_red_gates_150.png',
         handler: GatesObstacle,
-        leftBlockWidth: 175,
-        rightBlockWidth: 350,
+        leftBlockWidth: 85,
+        rightBlockWidth: 290,
         spriteOptions: {
             anchor: new PIXI.Point(0, 0)
         }
@@ -40,8 +52,8 @@ ObjectPool.OBSTACLES = {
         height: 30,
         texture: 'resources/monokai_blue_gates_30_1.png',
         handler: GatesObstacle,
-        leftBlockWidth: 210,
-        rightBlockWidth: 410,
+        leftBlockWidth: 240,
+        rightBlockWidth: 465,
         spriteOptions: {
             anchor: new PIXI.Point(0, 0)
         }

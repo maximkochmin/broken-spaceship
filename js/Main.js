@@ -24,6 +24,7 @@ var Main = function() {
     );
 
     this.lastRank = Main.SCORES_HISTORY_LENGTH + 1;
+    this.lastScore = null;
 
     this.highScores = window.localStorage.getItem(Main.HIGH_SCORES_STORAGE_KEY);
     this.highScores = this.highScores === null ? [] : this.highScores.split(',');
@@ -44,6 +45,7 @@ Main.TITLE = 'BROKEN SPACESHIP';
 
 Main.COLORS = {
     'text': '#F8F8F2',
+    'altText': '#A6E22E',
     'background': '#272822',
     'body': '#000000'
 };
@@ -60,6 +62,7 @@ Main.HIGH_SCORES_STORAGE_KEY = 'high_scores';
 
 
 Main.prototype.saveScore = function(score) {
+    this.lastScore = score;
     var i = 0;
     for (; i < this.highScores.length; i++) {
         if (this.highScores[i] < score) {
@@ -80,9 +83,7 @@ Main.prototype.getCurrentScreen = function() {
 
 Main.prototype.showLoadingScreen = function() {
     if (!('loading' in this.screens)) {
-
-        this.screens.loading = new LoadingScreen(this.width, this.height, Main.COLORS.text);
-
+        this.screens.loading = new LoadingScreen(this.width, this.height);
     }
     this.showScreen('loading');
 };
@@ -90,9 +91,9 @@ Main.prototype.showLoadingScreen = function() {
 
 Main.prototype.showStartScreen = function() {
     if (!('start' in this.screens)) {
-        this.screens.start = new StartScreen(this.width, this.height, Main.COLORS.text, Main.TITLE);
+        this.screens.start = new StartScreen(this.width, this.height, Main.TITLE);
     }
-    this.screens.start.setHighScores(this.highScores, this.lastRank);
+    this.screens.start.setHighScores(this.highScores, this.lastScore, this.lastRank);
     this.showScreen('start');
 
     this.stage.touchstart = this.startGame.bind(this);
@@ -102,8 +103,7 @@ Main.prototype.showStartScreen = function() {
 
 Main.prototype.startGame = function() {
     if (!('game' in this.screens)) {
-
-        this.screens.game = new GameScreen(this.width, this.height, Main.COLORS.text);
+        this.screens.game = new GameScreen(this.width, this.height, this.audio);
     }
     this.showScreen('game');
     this.screens.game.reset();
@@ -170,14 +170,21 @@ Main.prototype.loadFonts = function() {
 
 
 Main.prototype.onFontsLoaded = function() {
+    this.loadSounds();
+};
 
-    // this.showStartScreen();
-    this.startGame();
 
+Main.prototype.loadSounds = function() {
+    this.audio = new Audio([
+        'resources/ship_accelerate.mp3',
+        'resources/ship_crash.wav'
+    ]);
+    this.audio.loadSounds(this.showStartScreen.bind(this));
 };
 
 
 Main.prototype.update = function() {
+
     if ('update' in this.getCurrentScreen()) {
         this.getCurrentScreen().update();
     }

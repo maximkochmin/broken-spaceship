@@ -1,4 +1,4 @@
-var StartScreen = function (width, height, textColor, title) {
+var StartScreen = function (width, height, title) {
 
     PIXI.DisplayObjectContainer.call(this);
 
@@ -7,11 +7,10 @@ var StartScreen = function (width, height, textColor, title) {
     this.textFontSize = width * 0.09 | 0;
 
     var font = "Source Code Pro";
-    var fill = textColor;
 
     this.title = new PIXI.Text(title, {
         font: this.titleFontSize + 'px ' + font,
-        fill: fill
+        fill: Main.COLORS.text
     });
 
     this.title.anchor.x = 0.5;
@@ -20,10 +19,19 @@ var StartScreen = function (width, height, textColor, title) {
     this.title.position.y = height * 0.1;
     this.addChild(this.title);
 
+    this.last = new PIXI.Text('', {
+        font: this.textFontSize + 'px ' + font,
+        fill: Main.COLORS.altText
+    });
+    this.last.anchor.x = 0.5;
+    this.last.anchor.y = 0;
+    this.last.position.x = width / 2;
+    this.last.position.y = height * 0.2;
+    this.addChild(this.last);
 
     this.highScores = new PIXI.Text('', {
         font: this.textFontSize + 'px ' + font,
-        fill: fill
+        fill: Main.COLORS.text
     });
 
     this.highScores.anchor.x = 0.5;
@@ -39,8 +47,7 @@ var StartScreen = function (width, height, textColor, title) {
 StartScreen.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
 
-StartScreen.prototype.setHighScores = function(arr, currId) {
-
+StartScreen.prototype.setHighScores = function(arr, lastScore, currId) {
     var w = 15;
 
     var txt = '';
@@ -51,5 +58,12 @@ StartScreen.prototype.setHighScores = function(arr, currId) {
         }
         txt += arr[i] + '  \n';
     }
+
+    if (lastScore !== null) {
+        this.last.setText('last score: ' + lastScore);
+    } else {
+        this.last.setText('let\'s begin!');
+    }
+
     this.highScores.setText(txt);
 };

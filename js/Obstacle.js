@@ -6,8 +6,7 @@ var Obstacle = function(x, y, xOffset, spriteId, spriteInfo) {
         x: x,
         y: y
     };
-
-    this.xOffset = xOffset;
+    this.xOffset = xOffset | 0;
     this.spriteId = spriteId;
     this.spriteInfo = spriteInfo;
 
@@ -19,8 +18,8 @@ var Obstacle = function(x, y, xOffset, spriteId, spriteInfo) {
 Obstacle.prototype.setSprite = function(objectPool, container) {
     if (this.sprite !== null) return;
     this.sprite = objectPool.borrow(this.spriteId);
-    this.sprite.position.x = this.xOffset + this.position.x * this.spriteInfo.spriteOptions.scale.x;
-    container.addChild(this.sprite);
+    this.sprite.position.x = (this.xOffset + this.position.x * this.spriteInfo.spriteOptions.scale.x) | 0;
+    container.addChildAt(this.sprite, 2);
 };
 
 

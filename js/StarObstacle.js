@@ -12,6 +12,6 @@ StarObstacle.prototype.collides = function(point) {
     }
     var w = this.spriteInfo.width / 2;
     var h = this.spriteInfo.height / 2;
-    var r = Math.abs(point.x - this.position.x) / w + Math.abs(point.y - (this.position.y - h)) / h
+    var r = Math.abs(point.x - this.position.x) / w + Math.abs(point.y - (this.position.y - h)) / h;
     return r < 1;
 };

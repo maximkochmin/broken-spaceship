@@ -1,10 +1,9 @@
-
-var ScoreDisplay = function(x, y, screenWidth, textColor) {
+var ScoreDisplay = function(x, y, screenWidth) {
 
     var fontSize = screenWidth * 0.08 | 0;
     PIXI.Text.call(this, '', {
         'font': fontSize + 'px Source Code Pro',
-        'fill': textColor
+        'fill': Main.COLORS.text
     });
 
 
